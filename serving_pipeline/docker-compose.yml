@@ -26,7 +26,7 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - aio-network
+      - mlops-network
 
   ui:
     build:
@@ -43,9 +43,9 @@ services:
     depends_on:
       - api
     networks:
-      - aio-network
+      - mlops-network
 
 
 networks:
-  aio-network:
+  mlops-network:
     external: true

@@ -32,7 +32,7 @@ uv pip install -r requirements.txt
 
 1. **Create the shared external Docker network:**
    ```bash
-   docker network create aio-network
+   docker network create mlops-network
    ```
 
 2. **Create [infra/docker/mlflow/.env](file:///Users/arpitparmar/Projects/MLME%20MLOPS%20Project/Churn%20Prediction%20System/aio2025-mlops-project01/infra/docker/mlflow/.env):**
@@ -71,7 +71,7 @@ cd ../..
 ```
 
 > **Platform Notes:**
-> - **MinIO Buckets:** `aio_minio_mc` automatically creates both `mlflow` and `churn-mlops` buckets on startup.
+> - **MinIO Buckets:** `minio_mc` automatically creates both `mlflow` and `churn-mlops` buckets on startup.
 > - **GPU Monitoring:** `dcgm-exporter` uses `profiles: ["gpu"]` in [infra/docker/monitor/docker-compose.yaml](file:///Users/arpitparmar/Projects/MLME%20MLOPS%20Project/Churn%20Prediction%20System/aio2025-mlops-project01/infra/docker/monitor/docker-compose.yaml) so it is skipped on macOS/CPU machines. On a Linux NVIDIA GPU host, start it with `docker compose --profile gpu up -d` inside `infra/docker/monitor/`.
 > - **Grafana:** Prometheus (`http://prometheus:9090`), Loki (`http://loki:3100`), and the `Churn Prediction & System Overview` dashboard are auto-provisioned via `infra/docker/monitor/grafana/provisioning/`.
 

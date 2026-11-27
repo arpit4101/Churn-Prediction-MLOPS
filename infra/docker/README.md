@@ -37,7 +37,7 @@ Before starting the services, ensure you have:
 **Create the external Docker network:**
 
 ```bash
-docker network create aio-network
+docker network create mlops-network
 ```
 
 This network is used by MLflow and monitoring services to communicate.
@@ -292,7 +292,7 @@ After starting the services, access them at:
 
 1. **Check Docker network exists:**
    ```bash
-   docker network ls | grep aio-network
+   docker network ls | grep mlops-network
    ```
 
 2. **Check port availability:**

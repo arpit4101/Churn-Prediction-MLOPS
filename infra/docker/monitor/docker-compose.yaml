@@ -17,7 +17,7 @@ services:
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
-      - aio-network
+      - mlops-network
 
   prometheus:
     image: prom/prometheus:latest
@@ -34,7 +34,7 @@ services:
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     networks:
-      - aio-network
+      - mlops-network
 
   grafana:
     image: grafana/grafana:latest
@@ -59,7 +59,7 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
     networks:
-      - aio-network
+      - mlops-network
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -73,7 +73,7 @@ services:
     volumes:
       - '/:/host:ro'
     networks:
-      - aio-network
+      - mlops-network
 
   dcgm-exporter:
     profiles: [ "gpu" ]
@@ -91,10 +91,10 @@ services:
       - SYS_ADMIN
     runtime: nvidia
     networks:
-      - aio-network
+      - mlops-network
 
 networks:
-  aio-network:
+  mlops-network:
     external: true
 
 volumes:
