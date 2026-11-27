@@ -1,0 +1,38 @@
+# ==============================================================================
+# Root Requirements for aio2025-mlops-project01 (Customer Churn Prediction)
+# Install with: uv pip install -r requirements.txt
+# ==============================================================================
+
+# --- Data Pipeline & Feature Store ---
+numpy
+pandas
+pyarrow
+dvc
+dvc-s3
+feast[redis]
+matplotlib
+seaborn
+
+# --- Model Pipeline & Experiment Tracking ---
+mlflow
+scikit-learn
+xgboost
+shap
+loguru
+pyyaml
+boto3
+kagglehub
+
+# --- Serving Pipeline & Monitoring ---
+fastapi
+uvicorn
+pydantic
+python-dotenv
+gradio
+requests
+prometheus-fastapi-instrumentator
+evidently>=0.4.33,<0.7.0
+
+# --- Testing & Notebooks ---
+pytest
+ipykernel

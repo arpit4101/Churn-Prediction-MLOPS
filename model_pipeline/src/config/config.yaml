@@ -1,0 +1,54 @@
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  experiment_name: "churn_prediction_xgboost_v1.0"
+  artifact_location: "s3://mlflow/"
+  registry_uri: "http://localhost:5000"
+  tags:
+    task: "churn_prediction"
+    purpose: "training"
+    model_family: "xgboost"
+
+model:
+  model_type: "xgboost"
+  name: "xgboost_churn"
+  version: "1.0.0"
+  type: "classifier"
+  description: "XGBoost model for churn prediction"
+  train_test_split: 0.2
+  random_state: 42
+
+  parameters:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "binary:logistic"
+    eval_metric: "logloss"
+    device: "cpu"
+    n_jobs: -1
+    random_state: 42
+
+evaluation:
+  shap:
+    enable: true
+    explainer_type: "exact"
+    max_samples: 100
+
+  thresholds:
+    accuracy_score: 0.80
+    f1_score: 0.80
+
+features:
+  target_column: "churned"
+  training_features:
+    - age
+    - gender
+    - tenure_months
+    - usage_frequency
+    - support_calls
+    - payment_delay_days
+    - subscription_type
+    - contract_length
+    - total_spend
+    - last_interaction_days
