@@ -16,7 +16,7 @@ This guide provides the complete step-by-step instructions to set up, train, ser
 
 ## 1. Clone & Set Up the Python Environment
 
-From the repository root (`aio2025-mlops-project01/`):
+From the repository root (`Churn-Prediction-MLOPS/`):
 
 ```bash
 uv venv .venv --python 3.11
@@ -48,13 +48,13 @@ uv pip install -r requirements.txt
 
 3. **Create [infra/docker/airflow/.env](file:///Users/arpitparmar/Projects/MLME%20MLOPS%20Project/Churn%20Prediction%20System/aio2025-mlops-project01/infra/docker/airflow/.env):**
    ```bash
-   cp infra/docker/airflow/.env.example infra/docker/airflow/.env
+   cp infra/docker/airflow/.env
    ```
    *(On Linux, optionally set `AIRFLOW_UID=$(id -u)` inside `infra/docker/airflow/.env`.)*
 
 4. **Create [serving_pipeline/.env](file:///Users/arpitparmar/Projects/MLME%20MLOPS%20Project/Churn%20Prediction%20System/aio2025-mlops-project01/serving_pipeline/.env):**
    ```bash
-   cp serving_pipeline/.env.example serving_pipeline/.env
+   cp serving_pipeline/.env
    ```
    This pre-configures `MODEL_URI=models:/customer_churn_model@champion` and Docker service DNS names (`http://mlflow_server:5000`, `http://minio:9000`, `http://api:8000`).
 
@@ -123,6 +123,7 @@ cd ../..
 2. **Apply feature definitions and materialize to Redis:**
    ```bash
    cd data-pipeline/churn_feature_store/churn_features/feature_repo
+   dvc pull
    feast apply
    feast materialize-incremental "$(date -u +%Y-%m-%dT%H:%M:%S)"
    cd ../../../..
@@ -148,27 +149,30 @@ bash run_sh/train.sh
 # 2. Evaluate on holdout test.parquet
 bash run_sh/eval.sh --run-id <RUN_ID>
 
-# 3. Register the LoggedModel in MLflow Model Registry
-PYTHONPATH=../.. python scripts/register_model.py \
+# 3. Register the LoggedModel in MLflow Model Registry (use the training Run ID from step 1, not the eval Run ID)
+PYTHONPATH=.. python scripts/register_model.py \
   --config config/config.yaml \
   register \
   --run-id <RUN_ID> \
   --model-name customer_churn_model
 
-# 4. Set @champion alias (used by serving_pipeline/.env)
-PYTHONPATH=../.. python scripts/register_model.py \
+# 4. Set @champion alias using the version number printed by step 3 (used by serving_pipeline/.env)
+PYTHONPATH=.. python scripts/register_model.py \
   --config config/config.yaml \
   set-alias \
   --model-name customer_churn_model \
-  --version 1 \
+  --version <VERSION> \
   --alias champion
 
 cd ../..
 ```
 
+> **Note on Serving `@champion`:** `serving_pipeline/.env` sets `MODEL_URI=models:/customer_churn_model@champion`, so `churn-prediction-api` automatically loads whichever version has the `@champion` alias on startup. Whenever you promote or reassign `@champion` to a new version, run `docker restart churn-prediction-api` to load it.
+
 > **Promoting Subsequent Challenger Models:**
 > Register the new run, set its alias to `staging`, and run:
 > ```bash
+> cd model_pipeline/src
 > bash run_sh/promote.sh --model-name <MODEL_NAME> --version <VERSION> --config config/config.yaml
 > ```
 > `promote.sh` compares `f1_score` against the current `@champion` and only promotes if it improves.
@@ -178,6 +182,7 @@ cd ../..
 ## 7. Build & Start the Serving Pipeline (`FastAPI` + `Gradio UI`)
 
 1. **(Optional, for Drift Monitoring) Generate `reference_data.csv`:**
+   cd ../..
    ```bash
    python -c '
    import pandas as pd

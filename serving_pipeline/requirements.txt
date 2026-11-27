@@ -1,24 +1,24 @@
 # API & Server
-fastapi
-uvicorn
-pydantic
-python-dotenv
-requests
-prometheus-fastapi-instrumentator
+fastapi==0.141.1
+uvicorn==0.54.0
+pydantic==2.14.4
+python-dotenv==1.2.4
+requests==2.34.2
+prometheus-fastapi-instrumentator==8.1.0
 
 # MLflow & Model Runtime
-mlflow
-boto3
-scikit-learn
-xgboost
-pandas
-numpy
-loguru
-pyyaml
+mlflow==3.18.0
+boto3==1.43.117
+scikit-learn==1.9.1
+xgboost==3.2.0
+pandas==2.3.3
+numpy==2.4.6
+loguru==0.8.0
+pyyaml==6.0.4
 
 # Monitoring
-evidently>=0.4.33,<0.7.0
+evidently==0.4.36
 
 # UI & Feature Store
-gradio
-feast[redis]
+gradio==6.32.0
+feast[redis]==0.68.0

@@ -65,7 +65,15 @@ def main():
         if model_outputs:
             model_uri = f"models:/{model_outputs[0].model_id}"
         else:
-            model_uri = f"runs:/{args.run_id}/{config['model']['name']}"
+            artifact_path = config["model"]["name"]
+            artifacts = registry.client.list_artifacts(args.run_id, path=artifact_path)
+            has_mlmodel = any(a.path.endswith("MLmodel") for a in artifacts)
+            if not has_mlmodel:
+                raise ValueError(
+                    f"No logged model found in run '{args.run_id}'. "
+                    "Pass the training Run ID from train.sh (not the evaluation Run ID)."
+                )
+            model_uri = f"runs:/{args.run_id}/{artifact_path}"
         logger.info(f"Resolved model URI: {model_uri}")
 
         model_version = registry.register_model(

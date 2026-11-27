@@ -4,35 +4,35 @@
 # ==============================================================================
 
 # --- Data Pipeline & Feature Store ---
-numpy
-pandas
-pyarrow
-dvc
-dvc-s3
-feast[redis]
-matplotlib
-seaborn
+numpy==2.4.6
+pandas==2.3.3
+pyarrow==26.0.1
+dvc==3.67.1
+dvc-s3==3.3.0
+feast[redis]==0.68.0
+matplotlib==3.11.2
+seaborn==0.13.2
 
 # --- Model Pipeline & Experiment Tracking ---
-mlflow
-scikit-learn
-xgboost
-shap
-loguru
-pyyaml
-boto3
-kagglehub
+mlflow==3.18.0
+scikit-learn==1.9.1
+xgboost==3.2.0
+shap==0.51.0
+loguru==0.8.0
+pyyaml==6.0.4
+boto3==1.43.117
+kagglehub==1.0.3
 
 # --- Serving Pipeline & Monitoring ---
-fastapi
-uvicorn
-pydantic
-python-dotenv
-gradio
-requests
-prometheus-fastapi-instrumentator
-evidently>=0.4.33,<0.7.0
+fastapi==0.141.1
+uvicorn==0.54.0
+pydantic==2.14.4
+python-dotenv==1.2.4
+gradio==6.32.0
+requests==2.34.2
+prometheus-fastapi-instrumentator==8.1.0
+evidently==0.4.36
 
 # --- Testing & Notebooks ---
-pytest
-ipykernel
+pytest==9.2.0
+ipykernel==7.4.0
